@@ -90,14 +90,15 @@ polymorphism.
 		
 			isPayday(Employee e, Date date), or  // payday can change depending on the employee
 			deliverPay(Employee e, Money pay),
-
 	
 	switch through polymorphism solution.png
 
 		A factory creates a new object that extends an employee class.  This class defines an abstract
 		method common to all objects. 
 		
-		
+		The various functions, such as calculatePay, isPayday, and deliverPay ,will be dispatched poly-
+		morphically through the Employee interface.
+	
 
 Function Arguments
 
@@ -117,7 +118,10 @@ Monadic forms
 There are 3 types, and the last one should be avoided.
 
 	A question about the argument (involving a return value, e.g. isValid(object)).
-	You may be operating on that argument, transforming it into something else and returning it.
+
+	An argument modification. You may be operating on that argument, transforming it into 
+	something else and returning it.
+	
 	Using an output argument. <- Using an output argument instead of a return value for a 
 								 transformation is confusing. Use return values instead
 				
@@ -137,12 +141,12 @@ A function with two arguments is harder to understand than a monadic function. S
 like a coordinate, sometimes they are not, even if they appear to -assertEquals(expected, actual)- since
 they have no natural ordering.
 
-they are not evil, but they can be avoided by:
+they are not evil, but they can be avoided:
 
-	By adding a method into the object (the first argument) itself.
-	By adding that aditional variable (the first argument) as an instance variable into the object - the one who calls the function -
-	By creating a new class that receives an object in its constructor to later invoke a method receiving that
-	second argument.
+	By adding a method into the object itself (the first argument).
+	By adding that aditional variable as an instance variable into the object.
+	By creating a NEW class that receives an object in its constructor to later invoke a method receiving that
+	second argument we need.
 	
 
 Triads
@@ -177,7 +181,6 @@ all of the previous rules apply, because they are treated as one argument
 	void triad(String name, int count, Integer... args);
 
 
-
 Verbs and keywords
 
 You can pair verbs with nouns
@@ -203,7 +206,17 @@ Do match a functions name, into its functionality wihtout 'side effects'
 
 Output arguments
 
+In general output arguments should be avoided. If your function must change the state
+of something, have it change the state of its owning object, eg;
+
+	appendFooter(s) // by looking at this function, you may not know if something is appended to s, or s is
+					   appended to something
+
+	public void appendFooter(StringBuffer report)	// if you take a look at its declaration, you know it 
+													modifies the report
+
+	report.appendFooter();	// the state change is made by "its owning object" 
 
 
-	
+Command Query Separation
 
