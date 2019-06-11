@@ -1,0 +1,209 @@
+
+How can we make a function communicate its intent? What attributes can we give our functions
+that will allow a casual reader to intuit the kind of program they live inside?
+
+
+The first rule of functions is that they should be small. The second rule of functions is that
+they should be smaller than that.
+
+
+
+Small
+
+Functions should not be 100 lines long. Functions should hardly ever be 20 lines long
+
+	"When Kent showed me the code, I was struck by how small all the functions were. I was used to func-
+	tions in Swing programs that took up miles of vertical space. Every function in this pro-
+	gram was just two, or three, or four lines long. Each was transparently obvious. Each told
+	a story. And each led you to the next in a compelling order. That’s how short your functions
+	should be!"
+
+A function is recomended to be 3 to 4 lines of code:
+
+	"This implies that the blocks within if statements, else statements, while statements, and
+	so on should be one line long. Probably that line should be a function call. Not only does
+	this keep the enclosing function small, but it also adds documentary value because the
+	function called within the block can have a nicely descriptive name.
+	
+	This also implies that functions should not be large enough to hold nested structures.
+	Therefore, the indent level of a function should not be greater than one or two. This, of
+	course, makes the functions easier to read and understand."
+
+
+
+Do one thing
+
+	FUNCTIONS SHOULD DO ONE THING . THEY SHOULD DO IT WELL .THEY SHOULD DO IT ONLY
+	
+'One thing' is understood by the following statement: 
+
+	the set of building steps of the function are one level of abstraction 
+	below the stated name of the function. This 'level' of abstraction is
+	determined by the in-capability to shrink down the function set of steps 
+
+	another way to know that a function is doing more than “one thing” is if you can extract another function
+	from it with a name that is not merely a restatement of its implementation (when creating a new function is
+	DEAD pointless). 
+	
+	Mixing levels of abstraction within a function is always confusing. Readers may not be able to tell whether a
+	particular expression is an essential concept or a detail
+	
+
+Reading Code from Top to Bottom: The Stepdown Rule	
+
+We want every function to be followed by those at the next level of abstraction so that we can read the program,
+descending one level of abstraction at a time as we read down the list of functions. 
+
+e.g.
+
+	To include the setups and teardowns, we include setups, then we include the test page con-
+		tent, and then we include the teardowns.
+
+		To include the setups, we include the suite setup if this is a suite, then we include the
+		regular setup.
+		
+		To include the suite setup, we search the parent hierarchy for the “SuiteSetUp” page
+		and add an include statement with the path of that page.
+
+		To search the parent. . .
+		
+		e.g. page 81. 
+		
+
+
+Switch statements
+
+Unfortunately we can’t always avoid switch statements, but we can make sure that each switch
+statement is buried in a low-level class and is never repeated. We do this, of course, with
+polymorphism.
+
+
+	switch through polymorphism problem.png
+	
+		There are several problems with this function. First, it’s large, and when new
+		employee types are added, it will grow. Second, it very clearly does more than one thing.
+		Third, it violates the Single Responsibility Principle 7 (SRP) because there is more than one
+		reason for it to change. Fourth, it violates the Open Closed Principle 8 (OCP) because it
+		must change whenever new types are added. But possibly the worst problem with this
+		function is that there are an unlimited number of other functions that will have the same
+		structure. For example we could have
+		
+			isPayday(Employee e, Date date), or  // payday can change depending on the employee
+			deliverPay(Employee e, Money pay),
+
+	
+	switch through polymorphism solution.png
+
+		A factory creates a new object that extends an employee class.  This class defines an abstract
+		method common to all objects. 
+		
+		
+
+Function Arguments
+
+The ideal number is 0. 3 arguments should be avoided
+
+Arguments are even harder from a testing point of view. Imagine the difficulty of
+writing all the test cases to ensure that all the various combinations of arguments work
+properly. If there are no arguments, this is trivial. If there’s one argument, it’s not too hard.
+With two arguments the problem gets a bit more challenging. With more than two argu-
+ments, testing every combination of appropriate values can be daunting. 
+
+Output arguments are harder to understand than input arguments.
+
+
+Monadic forms
+
+There are 3 types, and the last one should be avoided.
+
+	A question about the argument (involving a return value, e.g. isValid(object)).
+	You may be operating on that argument, transforming it into something else and returning it.
+	Using an output argument. <- Using an output argument instead of a return value for a 
+								 transformation is confusing. Use return values instead
+				
+								 
+Flag arguments
+
+Flag arguments are ugly. Passing a boolean into a function is a truly terrible practice. It
+immediately complicates the signature of the method, loudly proclaiming that this function
+does more than one thing. It does one thing if the flag is true and another if the flag is false!.
+
+On this case, do create separate functions for each alternative route
+
+
+Dyadic functions
+
+A function with two arguments is harder to understand than a monadic function. Sometimes they are natural
+like a coordinate, sometimes they are not, even if they appear to -assertEquals(expected, actual)- since
+they have no natural ordering.
+
+they are not evil, but they can be avoided by:
+
+	By adding a method into the object (the first argument) itself.
+	By adding that aditional variable (the first argument) as an instance variable into the object - the one who calls the function -
+	By creating a new class that receives an object in its constructor to later invoke a method receiving that
+	second argument.
+	
+
+Triads
+
+Functions that take three arguments are significantly harder to understand than dyads. The
+issues of ordering, pausing, and ignoring are more than doubled. I suggest you think very
+carefully before creating a triad
+
+
+Argument objects
+
+When a function seems to need more than two or three arguments, it is likely that some of
+those arguments ought to be wrapped into a class of their own. 
+
+e.g.
+
+	make:
+		Circle makeCircle(double x, double y, double radius);
+	
+	into:
+		Circle makeCircle(Point center, double radius);
+
+
+ 
+Argument lists
+
+all of the previous rules apply, because they are treated as one argument
+
+
+	void monad(Integer... args);
+	void dyad(String name, Integer... args);
+	void triad(String name, int count, Integer... args);
+
+
+
+Verbs and keywords
+
+You can pair verbs with nouns
+
+	write(name)
+
+you can even add keywords to encode them
+
+	writeField(name) // we know now that "name" is a field
+	assertEquals(expected, actual)  // assertExpectedEqualsActual(expected, actual).
+
+
+
+Have No Side Effects
+
+function names should follow the "Do one thing" principle. Say that you have a checkPassword method that
+returns true if a user password is valid. While at it, if the password is valid, a session is initialized. 
+Imagine if someone else invoked this function to check a users password. Without knowing it, he will
+erase a users current sessions data just to check if the password is correct. 
+
+Do match a functions name, into its functionality wihtout 'side effects'
+
+
+Output arguments
+
+
+
+	
+

@@ -1,0 +1,87 @@
+60
+
+	variable hints
+
+The name of a variable, function, or class, should answer all the big questions. It
+should tell you why it exists, what it does, and how it is used
+
+Don’t be afraid to make a name long. A long descriptive name is better than a short
+enigmatic name. A long descriptive name is better than a long descriptive comment
+
+small tip for numeric values: 
+
+	choose a name that specifies what is being measured and the unit of that measurement
+	
+	
+
+Variables
+
+	use simple intentions like a boolean expression through a new class and method returning this evaluation in a
+	more meaningfull way
+	use numbers and strings in a boolean expression through meaningfull constants (static variables)
+	
+	Noise words are redundant. The word variable should never appear in a variable
+	name. The word table should never appear in a table name
+	
+		ProductInfo, ProductData -> Product	
+		NameString
+		CustomerObject -> Customer
+		MoneyAmount -> Money
+		TheMessage -> message
+		
+	They should be complete words, you must be able to pronounce it. A variable should never have a
+	comment to be understood: dmyexp -> ExpiryDate
+	
+	The length of a name should correspond to the size of its scope. Class variables should be meaningfull
+	and small code blacks may have single letter variables (like a for loop)
+	
+	Dont provide information for interfaces like IShapeFactory. If you are going to encode the
+	the interface, its better to encode the implementation, since that is what the user will
+	understand and see as something more meaningfull: IShapeFactory -> ShapeFactoryImpl
+	
+	
+	
+Class Names
+
+	Classes and objects should have noun or noun phrase names (sustantivo: animales, personas o cosas) like
+	Customer, WikiPage, Account, and AddressParser. Avoid words like Manager, Processor, Data, or Info in
+	the name of a class. 
+	
+	A class name should not be a verb (verbo: expresan acciones, procesos, estados o existencia que afectan a las
+	personas o las cosas).	
+	
+	
+	
+Method names
+
+	Methods should have verb or verb phrase names like postPayment, deletePage, or save.
+	
+	Accessors, mutators, and predicates should be named for their value and prefixed with get,
+	set, and is according to the javabean standard !?.
+	
+	When constructors are overloaded, use static factory methods with names that describe the arguments. For
+	example, Complex fulcrumPoint = Complex.FromRealNumber(23.0);
+	
+		is generally better than, Complex fulcrumPoint = new Complex(23.0);
+	
+	(one word per concept) pick one word for one abstract concept and stick with it. For instance, it’s confusing
+	to have fetch, retrieve, and get as equivalent methods of different classes
+	
+		Likewise, it’s confusing to have a controller and a manager and a driver in the same
+		code base. What is the essential difference between a DeviceManager and a Protocol-
+		Controller ? Why are both not controllers or both not managers? Are they both Drivers
+		really? The name leads you to expect two objects that have very different type as well as
+		having different classes.
+
+		if you follow the “one word per concept” rule, you could end up with many classes
+		that have, for example, an add method. As long as the parameter lists and return values of
+		the various add methods are semantically equivalent, all is well. Your naming should be consistent
+		as you want to mean with each name
+		
+	(Use solution domain names). Use technical names when appropiate (AccountVisitor -visitor pattern- ,
+	JobQueue  -Queue-)	
+	
+	(Use problem domain names). The code that has more to do with problem domain concepts
+	should have names drawn from the problem domain. 
+	
+	
